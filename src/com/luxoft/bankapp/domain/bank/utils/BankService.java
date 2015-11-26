@@ -1,4 +1,7 @@
-package com.luxoft.bankapp.domain.bank;
+package com.luxoft.bankapp.domain.bank.utils;
+
+import com.luxoft.bankapp.domain.bank.model.Bank;
+import com.luxoft.bankapp.domain.bank.users.Client;
 
 import java.util.Iterator;
 
@@ -11,14 +14,14 @@ public class BankService {
         bank.addClient(client);
     }
 
-    public void printMaximumAmountToWithdraw(Bank bank){
+    public void printMaximumAmountsToWithdraw(Bank bank){
         System.out.println();
 
         Iterator<Client> it = bank.getClients().iterator();
         for (int i = 0; i < bank.getClients().size(); i++) {
             Client c = it.next();
-            System.out.println("Клиент № " + i + " Имя :" + c.getName() + " Обращение: " + c.getGender());
-            System.out.println("   Аккаунт: " + c.getAccount() + ": Баланс: " + c.getAccount().getBalance() + " Кредит: " + c.getAccount().getOverdraft());
+            System.out.println("Клиент № " + i);
+            System.out.println("   " + c);
             System.out.println("   Максимальная сумма для выдачи:" + c.getAccount().maximumAmountToWithdraw());
 
             if ((c.getAccount().getOverdraft() > 0.0) && (c.getAccount().maximumAmountToWithdraw() > 0)) {

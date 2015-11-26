@@ -1,23 +1,21 @@
-package com.luxoft.bankapp.domain.bank;
+package com.luxoft.bankapp.domain.bank.accounts;
+
+import com.luxoft.bankapp.domain.bank.exceptions.NotEnoughFundsException;
 
 /**
  * Created by 2 on 11/25/2015.
  */
-public class CheckingAccount extends AbstractAccount {
-
+public class SavingsAccount extends AbstractAccount {
     //private double balance;
 
-    private double overdraft;
 
-    public CheckingAccount(double balance) {
+    public SavingsAccount(double balance) {
         super.setBalance(balance);
     }
 
-
-
     @Override
     public double getOverdraft() {
-        return overdraft;
+        return 0;
     }
 /*
     @Override
@@ -33,29 +31,25 @@ public class CheckingAccount extends AbstractAccount {
     }
 */
     @Override
-    public void withdrow(double x) {
+    public void withdrow(double x) throws NotEnoughFundsException {
         double balance = super.getBalance();
         System.out.println(balance + "-" + x + " ");
         if (balance >= x) {
             super.setBalance(balance - x);
             System.out.println("Баланс уменьшен на " + x + " Текущий баланс: " + super.getBalance());
         } else {
-            overdraft = overdraft + (-(balance - x));
-            super.setBalance(balance - balance);
-            System.out.println("Недостаточно средств для снтия. Текущий баланс: " + super.getBalance() + ". Кредит: " + overdraft);
+            throw new NotEnoughFundsException(x - super.getBalance());
+
         }
     }
 
     @Override
     public String toString() {
-        return "CheckingAccount";
+        return "SavingsAccount";
     }
 
     @Override
     public double maximumAmountToWithdraw() {
-        if (super.getBalance() > overdraft) return (super.getBalance() - overdraft);
-        else return 0;
+        return super.getBalance();
     }
-
-
 }

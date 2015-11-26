@@ -1,19 +1,23 @@
-package com.luxoft.bankapp.domain.bank;
+package com.luxoft.bankapp.domain.bank.accounts;
 
 /**
  * Created by 2 on 11/25/2015.
  */
-public class SavingsAccount extends AbstractAccount {
+public class CheckingAccount extends AbstractAccount {
+
     //private double balance;
 
+    private double overdraft;
 
-    public SavingsAccount(double balance) {
+    public CheckingAccount(double balance) {
         super.setBalance(balance);
     }
 
+
+
     @Override
     public double getOverdraft() {
-        return 0;
+        return overdraft;
     }
 /*
     @Override
@@ -36,17 +40,30 @@ public class SavingsAccount extends AbstractAccount {
             super.setBalance(balance - x);
             System.out.println("Баланс уменьшен на " + x + " Текущий баланс: " + super.getBalance());
         } else {
-            System.out.println("Недостаточно средств для снтия. На счету: " + super.getBalance() + " Требуется: " + x);
+            System.out.print("Выдано: " + x + " ");
+            overdraft = overdraft + (-(balance - x));
+            super.setBalance(balance - balance);
+            System.out.println("Текущий баланс: " + super.getBalance() + ". Кредит: " + overdraft);
         }
+
+        assert isPositive(overdraft);
+    }
+
+    private boolean isPositive(double overdraft) {
+        System.out.println("===== overdraft checked");
+        return overdraft >= 0;
     }
 
     @Override
     public String toString() {
-        return "SavingsAccount";
+        return "CheckingAccount";
     }
 
     @Override
     public double maximumAmountToWithdraw() {
-        return super.getBalance();
+        if (super.getBalance() > overdraft) return (super.getBalance() - overdraft);
+        else return 0;
     }
+
+
 }

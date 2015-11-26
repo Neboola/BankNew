@@ -1,4 +1,7 @@
-package com.luxoft.bankapp.domain.bank;
+package com.luxoft.bankapp.domain.bank.users;
+
+import com.luxoft.bankapp.domain.bank.accounts.Account;
+import com.luxoft.bankapp.domain.bank.exceptions.NotEnoughFundsException;
 
 /**
  * Created by 2 on 11/24/2015.
@@ -32,12 +35,19 @@ public class Client {
     }
 
 
-    Client(Account account){
-        System.out.println("Клиент добавлен. Баланс: " + account.getBalance());
+    public Client(Account account){
+
         this.account = account;
 
     }
 
+    public Client(Account account, String name, Gender gender){
+
+        this.account = account;
+        this.name = name;
+        this.gender = gender;
+
+    }
 
 
 
@@ -46,7 +56,7 @@ public class Client {
     }
 
 
-    public void withdrow(double x) {
+    public void withdrow(double x) throws NotEnoughFundsException {
         account.withdrow(x);
     }
 
@@ -55,5 +65,8 @@ public class Client {
         return gender == null? "" : gender.toString();
     }
 
-
+    @Override
+    public String toString() {
+        return ("Имя: " + gender + " " + name + " Аккаунт: " + account + ": Баланс: " + account.getBalance() + " Кредит: " + account.getOverdraft());
+    }
 }
