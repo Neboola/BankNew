@@ -5,8 +5,8 @@ package com.luxoft.bankapp.domain.bank.exceptions;
  */
 public class OverDraftLimitExceededException extends NotEnoughFundsException {
 
-
-    public OverDraftLimitExceededException(double amount) {
-        super(amount);
+    //private String message;
+    public OverDraftLimitExceededException(double amount, String message) {
+        super(amount, message);
     }
 }

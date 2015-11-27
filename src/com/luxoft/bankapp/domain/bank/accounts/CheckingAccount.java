@@ -1,11 +1,25 @@
 package com.luxoft.bankapp.domain.bank.accounts;
 
+import com.luxoft.bankapp.domain.bank.exceptions.NotEnoughFundsException;
+import com.luxoft.bankapp.domain.bank.exceptions.OverDraftLimitExceededException;
+
 /**
  * Created by 2 on 11/25/2015.
  */
 public class CheckingAccount extends AbstractAccount {
 
+
     //private double balance;
+    private double overdraftLimit;
+
+    public double getOverdraftLimit() {
+        return overdraftLimit;
+    }
+
+    public void setOverdraftLimit(double overdraftLimit) {
+        this.overdraftLimit = overdraftLimit;
+    }
+
 
     private double overdraft;
 
@@ -33,20 +47,32 @@ public class CheckingAccount extends AbstractAccount {
     }
 */
     @Override
-    public void withdrow(double x) {
+    public void withdrow(double x) throws NotEnoughFundsException {
         double balance = super.getBalance();
         System.out.println(balance + "-" + x + " ");
         if (balance >= x) {
             super.setBalance(balance - x);
             System.out.println("Баланс уменьшен на " + x + " Текущий баланс: " + super.getBalance());
         } else {
-            System.out.print("Выдано: " + x + " ");
-            overdraft = overdraft + (-(balance - x));
-            super.setBalance(balance - balance);
-            System.out.println("Текущий баланс: " + super.getBalance() + ". Кредит: " + overdraft);
+            double amount = (overdraft + (-(balance - x))) - overdraftLimit;
+            if (amount > 0) throw new OverDraftLimitExceededException(amount, "==== Недостаточно средств для выдачи кредита. Доступно: " + overdraftLimit
+                    + " Требуется дополнительно: " + amount);
+            else {
+                System.out.print("Выдано: " + x + " ");
+                System.out.print("Выдано в кредит: " + (-(balance - x)) + " ");
+                overdraft = overdraft + (-(balance - x));
+                super.setBalance(balance - balance);
+                System.out.println("Текущий баланс: " + super.getBalance() + ". Кредит: " + overdraft);
+                overdraftLimit = overdraftLimit - overdraft;
+            }
         }
 
         assert isPositive(overdraft);
+    }
+
+    @Override
+    public String getCreditMessage() {
+        return " Кредит: " + overdraft + " Кредитный лимит: " + (overdraftLimit);
     }
 
     private boolean isPositive(double overdraft) {

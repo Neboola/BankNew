@@ -12,9 +12,13 @@ public interface Account {
     double getBalance();
 
     double getOverdraft();
+    double getOverdraftLimit();
+    void setOverdraftLimit(double overdraftLimit);
 
     void deposit(double x);
 
     void withdrow(double x) throws NotEnoughFundsException;
+
+    String getCreditMessage();
 
 }

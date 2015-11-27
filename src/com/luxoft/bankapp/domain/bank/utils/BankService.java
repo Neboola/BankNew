@@ -1,5 +1,6 @@
 package com.luxoft.bankapp.domain.bank.utils;
 
+import com.luxoft.bankapp.domain.bank.accounts.CheckingAccount;
 import com.luxoft.bankapp.domain.bank.model.Bank;
 import com.luxoft.bankapp.domain.bank.users.Client;
 
@@ -12,6 +13,12 @@ public class BankService {
 
     public void addClient(Bank bank, Client client){
         bank.addClient(client);
+    }
+    public void addClientOverdraftLimit(Client client, double newOverdraftLimit) {
+        client.getAccount().setOverdraftLimit(newOverdraftLimit);
+    }
+    public void checkClientOverdraftLimit(Client client) {
+        client.getAccount().getOverdraftLimit();
     }
 
     public void printMaximumAmountsToWithdraw(Bank bank){

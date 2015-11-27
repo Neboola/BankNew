@@ -67,6 +67,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return ("Имя: " + gender + " " + name + " Аккаунт: " + account + ": Баланс: " + account.getBalance() + " Кредит: " + account.getOverdraft());
+        return ("Имя: " + gender + " " + name + " Аккаунт: " + account + ": Баланс: " + account.getBalance() + account.getCreditMessage());
     }
 }

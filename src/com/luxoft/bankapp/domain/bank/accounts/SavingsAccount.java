@@ -17,19 +17,30 @@ public class SavingsAccount extends AbstractAccount {
     public double getOverdraft() {
         return 0;
     }
-/*
+
     @Override
-    public double getBalance() {
-        return balance;
+    public double getOverdraftLimit() {
+        return 0;
     }
 
     @Override
-    public void deposit(double x) {
-        System.out.println(balance + "+" + x + " ");
-        balance = balance + x;
-        System.out.println("Баланс пополнен на " + x + " Текущий баланс: " + balance);
+    public void setOverdraftLimit(double overdraftLimit) {
+
     }
-*/
+
+    /*
+        @Override
+        public double getBalance() {
+            return balance;
+        }
+
+        @Override
+        public void deposit(double x) {
+            System.out.println(balance + "+" + x + " ");
+            balance = balance + x;
+            System.out.println("Баланс пополнен на " + x + " Текущий баланс: " + balance);
+        }
+    */
     @Override
     public void withdrow(double x) throws NotEnoughFundsException {
         double balance = super.getBalance();
@@ -38,9 +49,15 @@ public class SavingsAccount extends AbstractAccount {
             super.setBalance(balance - x);
             System.out.println("Баланс уменьшен на " + x + " Текущий баланс: " + super.getBalance());
         } else {
-            throw new NotEnoughFundsException(x - super.getBalance());
+            throw new NotEnoughFundsException(x - super.getBalance(), "==== Недостаточно средств для снтия. Имеется: " + balance
+                    + " Требуется дополнительно: " + (x - balance));
 
         }
+    }
+
+    @Override
+    public String getCreditMessage() {
+        return "";
     }
 
     @Override

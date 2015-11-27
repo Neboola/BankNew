@@ -32,14 +32,21 @@ public class BankApplication {
         BankService service = new BankService();
 
         for (int i = 0; i < 5; i++) {
-            service.addClient(bank, new Client(new CheckingAccount(random()), "Female Client " + i, Gender.FEMALE));
+            Client clientChecking = new Client(new CheckingAccount(random()), "Female Client " + i, Gender.FEMALE);
+            clientChecking.getAccount().setOverdraftLimit(1000);
+            service.addClient(bank, clientChecking);
         }
 
         for (int i = 0; i < 5; i++) {
-            service.addClient(bank, new Client(new SavingsAccount(random()), "Male Client " + i, Gender.MALE));
+            Client clientSaving = new Client(new SavingsAccount(random()), "Male Client " + i, Gender.MALE);
+            service.addClient(bank, clientSaving);
         }
 
 
+
+        modifyBank(bank,10);
+
+        service.printMaximumAmountsToWithdraw(bank);
 
         modifyBank(bank,10);
 
@@ -79,8 +86,8 @@ public class BankApplication {
                         try {
                             bank.getClients().get(number).withdrow(random());
                         } catch (NotEnoughFundsException e) {
-                            System.out.println("Недостаточно средств для снтия. Имеется: " + bank.getClients().get(number).getAccount().getBalance()
-                                    + " Требуется дополнительно: " + e.getAmount());
+                            System.out.println(e.getCreditMessage());
+
                         }
 
                         break;
